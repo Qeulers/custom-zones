@@ -1,0 +1,1739 @@
+{
+	"info": {
+		"_postman_id": "a871240b-ba19-4c5e-be08-75d094a35eb9",
+		"name": "Custom Zone Creation",
+		"description": "[https://developers.polestarglobal.com/docs/polestar-api/cf89bb09c7puy-introduction-to-pole-star-ap-is](https://developers.polestarglobal.com/docs/polestar-api/cf89bb09c7puy-introduction-to-pole-star-ap-is)",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27344666"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Extract account_id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var accountId = jsonData.account_id;",
+									"    pm.environment.set(\"account_id\", accountId);",
+									"    pm.collectionVariables.set(\"account_id\", accountId);",
+									"});",
+									"",
+									"pm.test(\"Extract user_id\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var userId = jsonData.user_id;",
+									"    pm.environment.set(\"user_id\", userId);",
+									"    pm.collectionVariables.set(\"user_id\", userId);",
+									"});",
+									"",
+									"pm.test(\"Extract Access Token\", function () {",
+									"    var accessToken = pm.response.headers.get(\"Access-Token\");",
+									"    pm.environment.set(\"access_token\", accessToken);",
+									"    pm.collectionVariables.set(\"access_token\", accessToken);",
+									"});",
+									"",
+									"pm.test(\"Extract Refresh Token\", function () {",
+									"    var accessToken = pm.response.headers.get(\"Refresh-Token\");",
+									"    pm.environment.set(\"refresh_token\", accessToken);",
+									"    pm.collectionVariables.set(\"refresh_token\", accessToken);",
+									"});",
+									"",
+									"pm.test(\"Extract User role\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var userRole = jsonData.role;",
+									"    pm.environment.set(\"user_role\", userRole);",
+									"    pm.collectionVariables.set(\"user_role\", userRole);",
+									"});",
+									"",
+									"pm.test(\"Extract Session ID if available\", function () {",
+									"    var sessionId = pm.response.headers.get(\"Session\");",
+									"    ",
+									"    if (sessionId) {",
+									"        pm.environment.set(\"session_id\", sessionId);",
+									"        pm.collectionVariables.set(\"session_id\", sessionId);",
+									"        console.log(\"Session ID extracted and stored: \" + sessionId);",
+									"    } else {",
+									"        pm.environment.set(\"session_id\", \"\");",
+									"        pm.collectionVariables.set(\"session_id\", \"\");",
+									"    }",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{user_email}}\",\n    \"password\": \"{{password}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/account/v2/auth/signin",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"account",
+								"v2",
+								"auth",
+								"signin"
+							]
+						},
+						"description": "This API authenticates the user by providing their username and password credentials in the body of the request. If authentication completes successfully a JWT token and refresh token will be sent back in the response body and headers."
+					},
+					"response": [
+						{
+							"name": "Signin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"{{username}}\",\n    \"password\": \"{{password}}\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_url}}/account/v1/auth/signin",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"account",
+										"v1",
+										"auth",
+										"signin"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Jul 2025 08:24:56 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "3623"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "eb307a3b-fbac-43c5-9680-76b09a035359"
+								},
+								{
+									"key": "Refresh-Token",
+									"value": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.rbMILv6DgW5Oly0zATuwdi9MQ2iK1UCADPFxO0brAfBGlRrxmbaw89TgHirbJjsBs8gU-j4BPE6G3qWyri3nPOcrnTk9VChp0My9pmfAd-KbrAYq5QjxdzNROYpAr4rLZn0doz-9EMgtyPQIMNAjY2Ry0aYoV-_nrN8ws2p4fN0OFJFOZ57CuBXRiP2mA7SwOVOHeI3a9O5MghMXKDtatumbd42SeaW_Nm4Mayhz8iGfVjcibwj-sCofZV_L2axKlqivIX5ihVVGHYMHdmoTDoegWnqeImQyV5a_05odJVGmOGYy3BHkrMj6XqYR7H8bKlYoAMIy_7zR677IEIGUSA.iSwRR3v46C-Caqk3.9dVK75oDxe1dybfDbrL0x0KhP_hwfPqpv6OzdbeUFcTbCYrI8hSLRRjOSdUQNSjeTNr-meOC7ExLKKuXxjFKqktv2xq8-nXF7MT46PxEsv8S1kb-CYpAMmqN4DKkw_yEqnc9gqOfPuL93gs9kVabMKt8DPC39fV4rsq2XdP4TCqBjWdMN9VFuk3CxFUL8W7BjNj8Z9SxNKiaVrBV1Vp0byMwjJ_A8Tja9DaJXpLIXspr6j4drXth84wPnZJXpHkJzKLsBRceQuVNzGH-2qOQQ_tByvGeNnZx0hy-d9WR5fFtcTRFwRRe-Yn60GC5NciJSNERKgVA1tCU8C2OfKkLrp-w_RSqteO58b_tVLkUVGmxqstu7x-ujl5TLBCi8LCcAuZUqjdPLFHEv3cA4TqfBekaBFOPctCsjTy3kT9aFsQ0eGPOiyiRW1D1x1xfLvsv1PD7t_V2Ml-RHLP61DxCch6G-NGMrZLN1OFswUeLzHn-spWZVvYXl6vivkxMihgzRRo4Sn18SdqXHXTHl-SofGZMjvMBEsU4eaNpE7O4K-hvWCqONiAZP-hWW1B6VwnYD8z9tcvPNnRG9_VdleXlTusUqwa1nimbKZlPYssz6p2xDOOx6jTN6RBwjh_pGXtpWqf8Sy0BBJwk58HgVuBVYLc9b826qaDVskTOw7X1q7I4DKqyy03la8uH_gZbTqx-tQAy3bTWuN7v_lTn9w2ryd3YRNeRhBw78RwnXRZiyxCJQrdVAkeg6cgu6V5tHx6iKPfnYXMNQABsFROhGj0oCUapNHJdc6h7vWE19frD6a45u_GeOfoOamvSINrLWjzjFPxmHLngRQNt-JWVnUSvGUB0dpswabyWanK1XZpwkHenccv_TlxKDaQdYA7j0VFyT-QAjULkASX8bl5QCwLqYYXOkrWEJ8ERTbGeGk2TctedKRbbacNgHymf5FufZ2U7eeYC3LlQbKvWbhEaoFKnd8znhxx5ypX39XE3-Q9ebKDMTL3gMiG0pkrUVn9ckJkE3hlgR0tQtjL6UwyVFjDsf6sFYAAvW6IPGsvrgY6YvjfyX7ZY1mzB2n8dC16VRGa2lH58DSfQ2LPMX0-mPcCVlauNdO6ul935vbR08H8MOuWp3CXBjj9ajAyrnXkNZoxE1kZnCELDHAuAjo7KJShldj3FySvQymeFBmsXX2UcKIF2q7LDzRdZVEo0uwMPLoiCpfGXg9IJisXpWSB1TBrcan7izKhppZ82TdsMxWdkEU8yEfQOOHRaj9kKBHYbW-BcQuwm6pAseK72_HycGg.wdKpi3DPybWZ99iUF75UYQ"
+								},
+								{
+									"key": "x-amzn-Remapped-Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Token",
+									"value": "eyJraWQiOiJOVGxwWjJUdElEcW1seUMwRXlCMW5IMmhxd3VZbis3dTdlTzBcLzUrM0wxZz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI5NTYyMDU5Mi02Nzk3LTQ1ZjItOTAxZS1lNDcyMTg5MGRiOGEiLCJjb2duaXRvOmdyb3VwcyI6WyJ2b3lhZ2UtaW5zaWdodHMtaW50ZXJuYWwtZmVhdHVyZXMiLCJ2b3lhZ2UtaW5zaWdodHMtZmVhdHVyZXMiLCJnbGVuY29yZS12ZXNzZWwtY2hhcmFjdGVyaXN0aWNzIiwidmVzc2VsLWluc2lnaHRzLWZlYXR1cmVzIiwiYWRtaW4iLCJ6b25lLXBvcnQtbm90aWZpY2F0aW9ucy1mZWF0dXJlcyIsInpvbmUtcG9ydC1pbnNpZ2h0cy1mZWF0dXJlcyIsInpvbmUtc2VydmljZS1mZWF0dXJlcyIsInpvbmUtbm90aWZpY2F0aW9ucy1mZWF0dXJlcyIsInBvcnQtaW5zaWdodHMtZmVhdHVyZXMiLCJwb3J0LW5vdGlmaWNhdGlvbnMtZmVhdHVyZXMiLCJ6b25lLWJ1bGstZGF0YS1hcGktZmVhdHVyZXMiLCJjdXN0b20tY2lyY3VsYXItem9uZS1pbnRlcm5hbC1mZWF0dXJlcyIsInZlc3NlbC1ub3RpZmljYXRpb25zLWZlYXR1cmVzIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX3gxRU5sdXlzdyIsImNsaWVudF9pZCI6IjZ0MTg1dTVlMHUzMzE2a3A4czl0NGk2Ymo1Iiwib3JpZ2luX2p0aSI6IjMzYjM4MTY1LTZmMmEtNDAxNS05ODM2LWQyZDAxNWViYWFlOCIsImV2ZW50X2lkIjoiZmMyM2IwNzctMDU2Ni00MGVhLWFkOTgtNGVjMTI0YmZlYmFmIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc1MTk2MzA5NiwiZXhwIjoxNzUxOTY2Njk1LCJpYXQiOjE3NTE5NjMwOTYsImp0aSI6IjliMDM1YTM0LWIzM2MtNDQxOC05YWVhLTY4NGJlMzIxMDE2OSIsInVzZXJuYW1lIjoiZnJhbmsua2V1bGVycyJ9.O2cP6vKamrV8xr6pv2GMQafLFzgtCZ5XolZBognVdGEDdnDmW907jaKOPALsDa6G4dKyraj4wEH-ThFSaI8wSd9-AhUMMTaqHz4oerD1bVAxC2N6zlJjO5uR4MjYHaHUiKb-pW2EIkWGNjMUNjpMTtSduUQ22JKuA00ATYT7d3T0m1RFFHbKIL1LDtX7ZU7uzQ0Fe-MbhF0QFhf7DgdSEBxZphsA36VGMBkvDCh56HX44Pu-1MdZIVqb50UOBkUa-55POUKI27mBTnaq_QOSdIXezZAbxiqy6wXhj-NwvykCLSRG4ccOdZqEiDCACuZlzGgAZyAdD-jrQadwPuap0g"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "NYZZxFb9oAMEouA="
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "x-amzn-Remapped-Date",
+									"value": "Tue, 08 Jul 2025 08:24:56 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"user_id\": \"15b9e93d-e815-4d9b-b450-fc8c7af47d21\",\n    \"username\": \"frank.keulers\",\n    \"first_name\": \"frank\",\n    \"last_name\": \"keulers\",\n    \"email\": \"frank.keulers@polestarglobal.com\",\n    \"role\": \"admin\",\n    \"account_id\": \"2cfb6151-c140-4162-9e63-0b918e559bb0\",\n    \"access_token\": \"eyJraWQiOiJOVGxwWjJUdElEcW1seUMwRXlCMW5IMmhxd3VZbis3dTdlTzBcLzUrM0wxZz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI5NTYyMDU5Mi02Nzk3LTQ1ZjItOTAxZS1lNDcyMTg5MGRiOGEiLCJjb2duaXRvOmdyb3VwcyI6WyJ2b3lhZ2UtaW5zaWdodHMtaW50ZXJuYWwtZmVhdHVyZXMiLCJ2b3lhZ2UtaW5zaWdodHMtZmVhdHVyZXMiLCJnbGVuY29yZS12ZXNzZWwtY2hhcmFjdGVyaXN0aWNzIiwidmVzc2VsLWluc2lnaHRzLWZlYXR1cmVzIiwiYWRtaW4iLCJ6b25lLXBvcnQtbm90aWZpY2F0aW9ucy1mZWF0dXJlcyIsInpvbmUtcG9ydC1pbnNpZ2h0cy1mZWF0dXJlcyIsInpvbmUtc2VydmljZS1mZWF0dXJlcyIsInpvbmUtbm90aWZpY2F0aW9ucy1mZWF0dXJlcyIsInBvcnQtaW5zaWdodHMtZmVhdHVyZXMiLCJwb3J0LW5vdGlmaWNhdGlvbnMtZmVhdHVyZXMiLCJ6b25lLWJ1bGstZGF0YS1hcGktZmVhdHVyZXMiLCJjdXN0b20tY2lyY3VsYXItem9uZS1pbnRlcm5hbC1mZWF0dXJlcyIsInZlc3NlbC1ub3RpZmljYXRpb25zLWZlYXR1cmVzIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX3gxRU5sdXlzdyIsImNsaWVudF9pZCI6IjZ0MTg1dTVlMHUzMzE2a3A4czl0NGk2Ymo1Iiwib3JpZ2luX2p0aSI6IjMzYjM4MTY1LTZmMmEtNDAxNS05ODM2LWQyZDAxNWViYWFlOCIsImV2ZW50X2lkIjoiZmMyM2IwNzctMDU2Ni00MGVhLWFkOTgtNGVjMTI0YmZlYmFmIiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc1MTk2MzA5NiwiZXhwIjoxNzUxOTY2Njk1LCJpYXQiOjE3NTE5NjMwOTYsImp0aSI6IjliMDM1YTM0LWIzM2MtNDQxOC05YWVhLTY4NGJlMzIxMDE2OSIsInVzZXJuYW1lIjoiZnJhbmsua2V1bGVycyJ9.O2cP6vKamrV8xr6pv2GMQafLFzgtCZ5XolZBognVdGEDdnDmW907jaKOPALsDa6G4dKyraj4wEH-ThFSaI8wSd9-AhUMMTaqHz4oerD1bVAxC2N6zlJjO5uR4MjYHaHUiKb-pW2EIkWGNjMUNjpMTtSduUQ22JKuA00ATYT7d3T0m1RFFHbKIL1LDtX7ZU7uzQ0Fe-MbhF0QFhf7DgdSEBxZphsA36VGMBkvDCh56HX44Pu-1MdZIVqb50UOBkUa-55POUKI27mBTnaq_QOSdIXezZAbxiqy6wXhj-NwvykCLSRG4ccOdZqEiDCACuZlzGgAZyAdD-jrQadwPuap0g\",\n    \"refresh_token\": \"eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.rbMILv6DgW5Oly0zATuwdi9MQ2iK1UCADPFxO0brAfBGlRrxmbaw89TgHirbJjsBs8gU-j4BPE6G3qWyri3nPOcrnTk9VChp0My9pmfAd-KbrAYq5QjxdzNROYpAr4rLZn0doz-9EMgtyPQIMNAjY2Ry0aYoV-_nrN8ws2p4fN0OFJFOZ57CuBXRiP2mA7SwOVOHeI3a9O5MghMXKDtatumbd42SeaW_Nm4Mayhz8iGfVjcibwj-sCofZV_L2axKlqivIX5ihVVGHYMHdmoTDoegWnqeImQyV5a_05odJVGmOGYy3BHkrMj6XqYR7H8bKlYoAMIy_7zR677IEIGUSA.iSwRR3v46C-Caqk3.9dVK75oDxe1dybfDbrL0x0KhP_hwfPqpv6OzdbeUFcTbCYrI8hSLRRjOSdUQNSjeTNr-meOC7ExLKKuXxjFKqktv2xq8-nXF7MT46PxEsv8S1kb-CYpAMmqN4DKkw_yEqnc9gqOfPuL93gs9kVabMKt8DPC39fV4rsq2XdP4TCqBjWdMN9VFuk3CxFUL8W7BjNj8Z9SxNKiaVrBV1Vp0byMwjJ_A8Tja9DaJXpLIXspr6j4drXth84wPnZJXpHkJzKLsBRceQuVNzGH-2qOQQ_tByvGeNnZx0hy-d9WR5fFtcTRFwRRe-Yn60GC5NciJSNERKgVA1tCU8C2OfKkLrp-w_RSqteO58b_tVLkUVGmxqstu7x-ujl5TLBCi8LCcAuZUqjdPLFHEv3cA4TqfBekaBFOPctCsjTy3kT9aFsQ0eGPOiyiRW1D1x1xfLvsv1PD7t_V2Ml-RHLP61DxCch6G-NGMrZLN1OFswUeLzHn-spWZVvYXl6vivkxMihgzRRo4Sn18SdqXHXTHl-SofGZMjvMBEsU4eaNpE7O4K-hvWCqONiAZP-hWW1B6VwnYD8z9tcvPNnRG9_VdleXlTusUqwa1nimbKZlPYssz6p2xDOOx6jTN6RBwjh_pGXtpWqf8Sy0BBJwk58HgVuBVYLc9b826qaDVskTOw7X1q7I4DKqyy03la8uH_gZbTqx-tQAy3bTWuN7v_lTn9w2ryd3YRNeRhBw78RwnXRZiyxCJQrdVAkeg6cgu6V5tHx6iKPfnYXMNQABsFROhGj0oCUapNHJdc6h7vWE19frD6a45u_GeOfoOamvSINrLWjzjFPxmHLngRQNt-JWVnUSvGUB0dpswabyWanK1XZpwkHenccv_TlxKDaQdYA7j0VFyT-QAjULkASX8bl5QCwLqYYXOkrWEJ8ERTbGeGk2TctedKRbbacNgHymf5FufZ2U7eeYC3LlQbKvWbhEaoFKnd8znhxx5ypX39XE3-Q9ebKDMTL3gMiG0pkrUVn9ckJkE3hlgR0tQtjL6UwyVFjDsf6sFYAAvW6IPGsvrgY6YvjfyX7ZY1mzB2n8dC16VRGa2lH58DSfQ2LPMX0-mPcCVlauNdO6ul935vbR08H8MOuWp3CXBjj9ajAyrnXkNZoxE1kZnCELDHAuAjo7KJShldj3FySvQymeFBmsXX2UcKIF2q7LDzRdZVEo0uwMPLoiCpfGXg9IJisXpWSB1TBrcan7izKhppZ82TdsMxWdkEU8yEfQOOHRaj9kKBHYbW-BcQuwm6pAseK72_HycGg.wdKpi3DPybWZ99iUF75UYQ\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Extract Access Token\", function () {",
+									"    var accessToken = pm.response.headers.get(\"Access-Token\");",
+									"    pm.environment.set(\"access_token\", accessToken);",
+									"    pm.collectionVariables.set(\"access_token\", accessToken);",
+									"});",
+									"",
+									"pm.test(\"Extract Refresh Token\", function () {",
+									"    var accessToken = pm.response.headers.get(\"Refresh-Token\");",
+									"    pm.environment.set(\"refresh_token\", accessToken);",
+									"    pm.collectionVariables.set(\"refresh_token\", accessToken);",
+									"});",
+									"",
+									"pm.test(\"Extract Session ID if available\", function () {",
+									"    var sessionId = pm.response.headers.get(\"Session\");",
+									"    ",
+									"    if (sessionId) {",
+									"        pm.environment.set(\"session_id\", sessionId);",
+									"        pm.collectionVariables.set(\"session_id\", sessionId);",
+									"        console.log(\"Session ID extracted and stored: \" + sessionId);",
+									"    } else {",
+									"        pm.environment.set(\"session_id\", \"\");",
+									"        pm.collectionVariables.set(\"session_id\", \"\");",
+									"    }",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Refresh-Token",
+								"value": "{{refresh_token}}",
+								"description": "The refresh token obtained during signin.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/account/v1/auth/access-token-refresh",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"account",
+								"v1",
+								"auth",
+								"access-token-refresh"
+							]
+						},
+						"description": "Refresh the access token using the refresh token obtained during signin."
+					},
+					"response": [
+						{
+							"name": "Refresh Token",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Refresh-Token",
+										"value": "{{refresh_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server_url}}/account/v1/auth/access-token-refresh",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"account",
+										"v1",
+										"auth",
+										"access-token-refresh"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Jul 2025 08:26:42 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "3493"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "dd17aa74-e539-4d34-8db3-d34e8e3d4759"
+								},
+								{
+									"key": "Refresh-Token",
+									"value": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.SAsPCNUlCOC_U_NZOgXiBfh5oaAiIS4jfw53PnCfSqGswgRBfPj26Id7wYv6LzZMwfd3Ct5Zf01isP0Z8uHlgzdeHb4Gc5TQw3JKAk4as_FLsgG90Zy-Li2IEySjeGbe6BJMph56QyjwPK36LQAh2IPCQ2YoAhagdXgYj4YqHm4J5ej62Sgrd_5J-CWCRVcrwxKRWNM8IU5EQVSBicK6ttaDZ5NBpjnq_-luLnGHM1YX_PuzhWeB7HwlCxWRYEMZsd8uZKpAHtx7WPV6WyGL-ObZXpQPwOLHjPDjeYndya5LBb_kc7-lP2JGVV3z0WGrioQ2YOkSyaJkzz6PLTpelg.NFC_ahRwqC1baGhE.kyHWVShCT37R-rF_VJsoi53-ARcYmtdVY0NBzkiAQVqopxao1ZQaei_4a38B40NV_YKVMD0y30eLhqU2LaAPYrN_35z4YVz1sAhZ_o5NJsqEzBxc3c8GNwoFYn-G-CTGABYEgsz9kBoa4_QZZnlaFfIRKrkn8GZp5gF6BEf9_LfF0yRkE307D4WOGK8egUrbC9l5i9PzeagTNjSyqbDte-Mz5ImfGlPNHTTXwfsf7PTsDSocFi_mCGh0nyWfhFYpGnBUbNoTNxy3V1qR30hNhFgjY8Pe00W9mB6g-JLIdspNEell-WkBNnqJ2aUTfRN5EJmMZL6JmLS9QuGGJDkRAGxELf3836nsGR_gXY_gLhhhobRjTZqt7N5UezsUAp3OdSFgv2HdQ0IIegmmLARMU9kRP8Q9b2TocSfIN9Y--P8nyQn9QajRhDhKHMLYVeQrAmqFaGDF9hSU7iWSqFYGN9VH7_TfkAM1ufOTx-bR57pGuYxkwn86qxrMq6QKfo-ZJNB0AxPPg6RE1mmxCvvbfwhKlmS-dc5HznxKsFyQdLRd9KuBnwgj_oUPV4p5rtZ5PRRY7_trjA-noXb8Eq8w5U-R0gE3uYPZFQ3hvO_-I8E4ZraIc_e9VFnKqXGtHt3rg03o1TCN3ZT1XIiZqU3Pnf3eZGNB3B68KzuAMcHOkzZ9tB89Kpxig3XCBnph-xpe6dIJW9XpLL42Yt62LknOYY7CIA9p99lhwu_3-q2DrvpwU4c2wP4jSK938feYfweh5_0VcaOkfOBDX4N_ywenOcui8XX0ElDAJkBIVXDm_OQmp58xPA6kheA_iY_cHrXaDiBZe5vu5tm-0NhiBx9iE0IK0FFhSea5ED92l7sH-Q0b46OoOlWaL6U3famXMApTuFahKnY9S66vr13FleDopNMltYJNUtK-LuadvqXIvqypHZj4HjjSUW0wyzdQ4y33BI6PwlCRQJ5_-Sa1gFf_RXWigWErQiMMKhaUDWsv1LVp3IwU43ujrOsCuXdqj3Lgwy-Ds4wbggZ9n40T7tTv30WGdv0nOoPJ8ozjsTVXgZTollcANJqG-dzlPymyvs0hGekmc8t8we99mh9znJxhbo2mpR_L7miiGKeMY7iNwNA3xV1nyjmCbXZWV47TSbvPP0a7r_5WuiMD9HuYE9ua8Zbb715-PRlMJTMe9PX7BgGmFrYcwM-yH7Zm-4VeBkvUjoYMKV-DFQJMocnHDinT5sVWgYrH4eBDpjecSALWcaqrqEbNf1m2eijfoKV3cG-ihwTw_0ONQX1m4Ij-ig.xXq_UqqUk2iMUKMuOcqqyQ"
+								},
+								{
+									"key": "x-amzn-Remapped-Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "Access-Token",
+									"value": "eyJraWQiOiJOVGxwWjJUdElEcW1seUMwRXlCMW5IMmhxd3VZbis3dTdlTzBcLzUrM0wxZz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI5NTYyMDU5Mi02Nzk3LTQ1ZjItOTAxZS1lNDcyMTg5MGRiOGEiLCJjb2duaXRvOmdyb3VwcyI6WyJ2b3lhZ2UtaW5zaWdodHMtaW50ZXJuYWwtZmVhdHVyZXMiLCJ2b3lhZ2UtaW5zaWdodHMtZmVhdHVyZXMiLCJnbGVuY29yZS12ZXNzZWwtY2hhcmFjdGVyaXN0aWNzIiwidmVzc2VsLWluc2lnaHRzLWZlYXR1cmVzIiwiYWRtaW4iLCJ6b25lLXBvcnQtbm90aWZpY2F0aW9ucy1mZWF0dXJlcyIsInpvbmUtcG9ydC1pbnNpZ2h0cy1mZWF0dXJlcyIsInpvbmUtc2VydmljZS1mZWF0dXJlcyIsInpvbmUtbm90aWZpY2F0aW9ucy1mZWF0dXJlcyIsInBvcnQtaW5zaWdodHMtZmVhdHVyZXMiLCJwb3J0LW5vdGlmaWNhdGlvbnMtZmVhdHVyZXMiLCJ6b25lLWJ1bGstZGF0YS1hcGktZmVhdHVyZXMiLCJjdXN0b20tY2lyY3VsYXItem9uZS1pbnRlcm5hbC1mZWF0dXJlcyIsInZlc3NlbC1ub3RpZmljYXRpb25zLWZlYXR1cmVzIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX3gxRU5sdXlzdyIsImNsaWVudF9pZCI6IjZ0MTg1dTVlMHUzMzE2a3A4czl0NGk2Ymo1Iiwib3JpZ2luX2p0aSI6Ijc1OTU2ZTE2LTUzNzAtNDQ2NS1hNmViLTI2MjNhNTIyNGJhZiIsImV2ZW50X2lkIjoiYzQxMDNjYzctYjNmOS00MzBiLThmZGItOWFhYjZjMTVjYmU1IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc1MTk2MzE5MSwiZXhwIjoxNzUxOTY2ODAyLCJpYXQiOjE3NTE5NjMyMDIsImp0aSI6IjYzODQ4ZjQ2LWYwZDgtNDk1Yi1hMTU5LThlYjY4OWRiMTI4NSIsInVzZXJuYW1lIjoiZnJhbmsua2V1bGVycyJ9.MqG3E7kuT2UGGBfEOoaO_HglRC5PNleIcGevVBMwAt-caFtTZ8qIoW0Wl-qLfzKZckyvbs5UnrZ1KCeF0lAeUAyK-sxyijsHmy25IG6WFaITMKwaiWFf4HPM_M3rjNAJG2FVpRmZPaZpaEMknBK0n3jXHrE-lo9AQ0WfPeeQApwf-eHwEn3XDnn2MBu-TcYYxlO8H2g3rePxiFDrQ49aFlJKdHe8mOdM2KXByen32RkLDexBAAiqX20548_zSfNO_bgkjt1hIV_JjfuYrfbiNKCdDAsZ7VPlYILVbLp9FY91F4i0E5kaporal9Se5csz7lBnYViXTwbeEhddZd9xJw"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "NYZqdFWToAMEvcQ="
+								},
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "x-amzn-Remapped-Date",
+									"value": "Tue, 08 Jul 2025 08:26:42 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"status_code\": 200,\n    \"message\": \"Access token generated\",\n    \"request_uri\": \"/v1/auth/access-token-refresh\",\n    \"access_token\": \"eyJraWQiOiJOVGxwWjJUdElEcW1seUMwRXlCMW5IMmhxd3VZbis3dTdlTzBcLzUrM0wxZz0iLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiI5NTYyMDU5Mi02Nzk3LTQ1ZjItOTAxZS1lNDcyMTg5MGRiOGEiLCJjb2duaXRvOmdyb3VwcyI6WyJ2b3lhZ2UtaW5zaWdodHMtaW50ZXJuYWwtZmVhdHVyZXMiLCJ2b3lhZ2UtaW5zaWdodHMtZmVhdHVyZXMiLCJnbGVuY29yZS12ZXNzZWwtY2hhcmFjdGVyaXN0aWNzIiwidmVzc2VsLWluc2lnaHRzLWZlYXR1cmVzIiwiYWRtaW4iLCJ6b25lLXBvcnQtbm90aWZpY2F0aW9ucy1mZWF0dXJlcyIsInpvbmUtcG9ydC1pbnNpZ2h0cy1mZWF0dXJlcyIsInpvbmUtc2VydmljZS1mZWF0dXJlcyIsInpvbmUtbm90aWZpY2F0aW9ucy1mZWF0dXJlcyIsInBvcnQtaW5zaWdodHMtZmVhdHVyZXMiLCJwb3J0LW5vdGlmaWNhdGlvbnMtZmVhdHVyZXMiLCJ6b25lLWJ1bGstZGF0YS1hcGktZmVhdHVyZXMiLCJjdXN0b20tY2lyY3VsYXItem9uZS1pbnRlcm5hbC1mZWF0dXJlcyIsInZlc3NlbC1ub3RpZmljYXRpb25zLWZlYXR1cmVzIl0sImlzcyI6Imh0dHBzOlwvXC9jb2duaXRvLWlkcC51cy1lYXN0LTEuYW1hem9uYXdzLmNvbVwvdXMtZWFzdC0xX3gxRU5sdXlzdyIsImNsaWVudF9pZCI6IjZ0MTg1dTVlMHUzMzE2a3A4czl0NGk2Ymo1Iiwib3JpZ2luX2p0aSI6Ijc1OTU2ZTE2LTUzNzAtNDQ2NS1hNmViLTI2MjNhNTIyNGJhZiIsImV2ZW50X2lkIjoiYzQxMDNjYzctYjNmOS00MzBiLThmZGItOWFhYjZjMTVjYmU1IiwidG9rZW5fdXNlIjoiYWNjZXNzIiwic2NvcGUiOiJhd3MuY29nbml0by5zaWduaW4udXNlci5hZG1pbiIsImF1dGhfdGltZSI6MTc1MTk2MzE5MSwiZXhwIjoxNzUxOTY2ODAyLCJpYXQiOjE3NTE5NjMyMDIsImp0aSI6IjYzODQ4ZjQ2LWYwZDgtNDk1Yi1hMTU5LThlYjY4OWRiMTI4NSIsInVzZXJuYW1lIjoiZnJhbmsua2V1bGVycyJ9.MqG3E7kuT2UGGBfEOoaO_HglRC5PNleIcGevVBMwAt-caFtTZ8qIoW0Wl-qLfzKZckyvbs5UnrZ1KCeF0lAeUAyK-sxyijsHmy25IG6WFaITMKwaiWFf4HPM_M3rjNAJG2FVpRmZPaZpaEMknBK0n3jXHrE-lo9AQ0WfPeeQApwf-eHwEn3XDnn2MBu-TcYYxlO8H2g3rePxiFDrQ49aFlJKdHe8mOdM2KXByen32RkLDexBAAiqX20548_zSfNO_bgkjt1hIV_JjfuYrfbiNKCdDAsZ7VPlYILVbLp9FY91F4i0E5kaporal9Se5csz7lBnYViXTwbeEhddZd9xJw\",\n    \"refresh_token\": \"eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.SAsPCNUlCOC_U_NZOgXiBfh5oaAiIS4jfw53PnCfSqGswgRBfPj26Id7wYv6LzZMwfd3Ct5Zf01isP0Z8uHlgzdeHb4Gc5TQw3JKAk4as_FLsgG90Zy-Li2IEySjeGbe6BJMph56QyjwPK36LQAh2IPCQ2YoAhagdXgYj4YqHm4J5ej62Sgrd_5J-CWCRVcrwxKRWNM8IU5EQVSBicK6ttaDZ5NBpjnq_-luLnGHM1YX_PuzhWeB7HwlCxWRYEMZsd8uZKpAHtx7WPV6WyGL-ObZXpQPwOLHjPDjeYndya5LBb_kc7-lP2JGVV3z0WGrioQ2YOkSyaJkzz6PLTpelg.NFC_ahRwqC1baGhE.kyHWVShCT37R-rF_VJsoi53-ARcYmtdVY0NBzkiAQVqopxao1ZQaei_4a38B40NV_YKVMD0y30eLhqU2LaAPYrN_35z4YVz1sAhZ_o5NJsqEzBxc3c8GNwoFYn-G-CTGABYEgsz9kBoa4_QZZnlaFfIRKrkn8GZp5gF6BEf9_LfF0yRkE307D4WOGK8egUrbC9l5i9PzeagTNjSyqbDte-Mz5ImfGlPNHTTXwfsf7PTsDSocFi_mCGh0nyWfhFYpGnBUbNoTNxy3V1qR30hNhFgjY8Pe00W9mB6g-JLIdspNEell-WkBNnqJ2aUTfRN5EJmMZL6JmLS9QuGGJDkRAGxELf3836nsGR_gXY_gLhhhobRjTZqt7N5UezsUAp3OdSFgv2HdQ0IIegmmLARMU9kRP8Q9b2TocSfIN9Y--P8nyQn9QajRhDhKHMLYVeQrAmqFaGDF9hSU7iWSqFYGN9VH7_TfkAM1ufOTx-bR57pGuYxkwn86qxrMq6QKfo-ZJNB0AxPPg6RE1mmxCvvbfwhKlmS-dc5HznxKsFyQdLRd9KuBnwgj_oUPV4p5rtZ5PRRY7_trjA-noXb8Eq8w5U-R0gE3uYPZFQ3hvO_-I8E4ZraIc_e9VFnKqXGtHt3rg03o1TCN3ZT1XIiZqU3Pnf3eZGNB3B68KzuAMcHOkzZ9tB89Kpxig3XCBnph-xpe6dIJW9XpLL42Yt62LknOYY7CIA9p99lhwu_3-q2DrvpwU4c2wP4jSK938feYfweh5_0VcaOkfOBDX4N_ywenOcui8XX0ElDAJkBIVXDm_OQmp58xPA6kheA_iY_cHrXaDiBZe5vu5tm-0NhiBx9iE0IK0FFhSea5ED92l7sH-Q0b46OoOlWaL6U3famXMApTuFahKnY9S66vr13FleDopNMltYJNUtK-LuadvqXIvqypHZj4HjjSUW0wyzdQ4y33BI6PwlCRQJ5_-Sa1gFf_RXWigWErQiMMKhaUDWsv1LVp3IwU43ujrOsCuXdqj3Lgwy-Ds4wbggZ9n40T7tTv30WGdv0nOoPJ8ozjsTVXgZTollcANJqG-dzlPymyvs0hGekmc8t8we99mh9znJxhbo2mpR_L7miiGKeMY7iNwNA3xV1nyjmCbXZWV47TSbvPP0a7r_5WuiMD9HuYE9ua8Zbb715-PRlMJTMe9PX7BgGmFrYcwM-yH7Zm-4VeBkvUjoYMKV-DFQJMocnHDinT5sVWgYrH4eBDpjecSALWcaqrqEbNf1m2eijfoKV3cG-ihwTw_0ONQX1m4Ij-ig.xXq_UqqUk2iMUKMuOcqqyQ\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Send Password Reset Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"{{user_email}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/account/v1/auth/password-reset/otp",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"account",
+								"v1",
+								"auth",
+								"password-reset",
+								"otp"
+							]
+						},
+						"description": "Trigger a password reset email which will be sent to the email address provided in the request body (provided the user account exists).\n\nThe email will contain a One Time Passcode (OTP), which can be used to set a new password by calling the Reset User Password endpoint."
+					},
+					"response": []
+				},
+				{
+					"name": "Reset User Password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"otp\": <OTP>,\n    \"email\": \"{{user_email}}\",\n    \"new_password\": \"\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{server_url}}/account/v1/auth/password-reset",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"account",
+								"v1",
+								"auth",
+								"password-reset"
+							]
+						},
+						"description": "Set a new password for your user account by providing the One Time Passcode (OTP) obtained via the Send Password Reset Email endpoint, your registered email address and your new password."
+					},
+					"response": []
+				}
+			],
+			"description": "Stoplight documentation: [https://pole-star-global.stoplight.io/docs/polestar-api/6yia8mwbaamk7-authentication](https://pole-star-global.stoplight.io/docs/polestar-api/6yia8mwbaamk7-authentication)\n\nDeveloper Portal docs: [https://developers.polestarglobal.com/docs/polestar-api/6yia8mwbaamk7-authentication](https://developers.polestarglobal.com/docs/polestar-api/6yia8mwbaamk7-authentication)"
+		},
+		{
+			"name": "Zone & Port Insights",
+			"item": [
+				{
+					"name": "Custom Zones",
+					"item": [
+						{
+							"name": "Create Custom Zone",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{access_token}}",
+										"description": "Bearer token obtained via the signin endpoint.",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"account_id\": \"<INTERNAL USE ONLY>\",\n  \"name\": \"<THE NAME OF THE CUSTOM ZONE>\",\n  \"description\": \"<CUSTOM ZONE DESCRIPTION (optional)>\",\n  \"custom_type\": \"<POLYGON || CIRCULAR>\",\n  \"circle_details\": {\n    \"latitude\": \"<CIRCULAR ZONE CENTRE POINT LATITUDE>\",\n    \"longitude\": \"<CIRCULAR ZONE CENTRE POINT LONGITUDE>\",\n    \"radius\": \"<CIRCULAR ZONE RADIUS IN METERS>\"\n  },\n  \"polygon_details\": {\n    \"format\": \"GEOJSON || WKT\",\n    \"polygon\": \"<POLYGON DEFINITION IN GEOJSON OR WKT FORMAT>\"\n  }\n}\n\n\n\n\n\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_url}}/zone-port-insights/v1/zones/custom",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"zone-port-insights",
+										"v1",
+										"zones",
+										"custom"
+									]
+								},
+								"description": "Create a new custom zone for an account. Supports polygon (GEOJSON/WKT) or circular zones. Provide account_id (internal), name, optional description, and either polygon_details or circle_details depending on custom_type. Internal endpoint: requires VPN and Super Admin access."
+							},
+							"response": [
+								{
+									"name": "POLYGON: Port of Stein (NL)",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{access_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Haven Stein\",\n  \"description\": \"A Polygon describing the inland port in Stein (NL)\",\n  \"custom_type\": \"POLYGON\",\n  \"polygon_details\": {\n    \"format\": \"GEOJSON\",\n    \"polygon\": \"{\\\"type\\\":\\\"FeatureCollection\\\",\\\"features\\\":[{\\\"type\\\":\\\"Feature\\\",\\\"properties\\\":{},\\\"geometry\\\":{\\\"type\\\":\\\"Polygon\\\",\\\"coordinates\\\":[[[5.7537472,50.9720187],[5.7668329,50.9694087],[5.7719333,50.9848998],[5.7645525,50.9853447],[5.7618203,50.9816761],[5.7561203,50.9748358],[5.7537472,50.9720187]]]}}]}\"\n  }\n}\n\n\n\n\n\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{server_url}}/zone-port-insights/v1/zones/custom",
+											"host": [
+												"{{server_url}}"
+											],
+											"path": [
+												"zone-port-insights",
+												"v1",
+												"zones",
+												"custom"
+											]
+										}
+									},
+									"status": "Created",
+									"code": 201,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 10 Jul 2025 14:13:48 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Content-Length",
+											"value": "938"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "x-amzn-RequestId",
+											"value": "434e010a-9d8e-4cf4-9db8-1d0de23f386b"
+										},
+										{
+											"key": "x-amzn-Remapped-Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "x-amz-apigw-id",
+											"value": "NfyYeFsooAMERjA="
+										},
+										{
+											"key": "response-ms",
+											"value": "25"
+										},
+										{
+											"key": "x-amzn-Remapped-Date",
+											"value": "Thu, 10 Jul 2025 14:13:48 GMT"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"meta\": {\n        \"request_id\": \"0912b848-eb4d-4828-ba22-d6a99845043c\",\n        \"request_timestamp\": \"2025-07-10T14:13:48Z\"\n    },\n    \"data\": {\n        \"centroid\": {\n            \"longitude\": 50.97713403257443,\n            \"latitude\": 5.763968924124481\n        },\n        \"id\": \"31a00ffe-ccf1-434f-a7be-92e4c36bbec9\",\n        \"type\": \"Custom\",\n        \"sub_type\": \"POLYGON\",\n        \"name\": \"Haven Stein\",\n        \"description\": \"A Polygon describing the inland port in Stein (NL)\",\n        \"created_by\": \"frank.keulers@polestarglobal.com\",\n        \"created_at\": \"2025-07-10T14:13:48Z\",\n        \"last_modified_by\": \"frank.keulers@polestarglobal.com\",\n        \"last_modified_at\": \"2025-07-10T14:13:48Z\",\n        \"custom_type\": \"POLYGON\",\n        \"circle_details\": null,\n        \"polygon_details\": {\n            \"format\": \"GEOJSON\",\n            \"polygon\": \"{\\\"type\\\":\\\"FeatureCollection\\\",\\\"features\\\":[{\\\"type\\\":\\\"Feature\\\",\\\"properties\\\":{},\\\"geometry\\\":{\\\"type\\\":\\\"Polygon\\\",\\\"coordinates\\\":[[[5.7537472,50.9720187],[5.7668329,50.9694087],[5.7719333,50.9848998],[5.7645525,50.9853447],[5.7618203,50.9816761],[5.7561203,50.9748358],[5.7537472,50.9720187]]]}}]}\"\n        }\n    }\n}"
+								},
+								{
+									"name": "CIRCLE: East OPL Singapore Bunkering Area 50NM",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{access_token}}",
+												"description": "Bearer token obtained via the signin endpoint.",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"East OPL Singapore Bunkering Area 50NM\",\n  \"description\": \"Singapore Bunkering area (50NM) for demo purpose\",\n  \"custom_type\": \"CIRCULAR\",\n  \"circle_details\": {\n    \"latitude\": 1.816667,\n    \"longitude\": 104.700000,\n    \"radius\": 92600\n  }\n}\n\n\n\n\n\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{server_url}}/zone-port-insights/v1/zones/custom",
+											"host": [
+												"{{server_url}}"
+											],
+											"path": [
+												"zone-port-insights",
+												"v1",
+												"zones",
+												"custom"
+											]
+										}
+									},
+									"_postman_previewlanguage": "",
+									"header": [],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"body": ""
+								},
+								{
+									"name": "CIRCLE: East OPL Singapore Bunkering Area 100NM",
+									"originalRequest": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{access_token}}",
+												"description": "Bearer token obtained via the signin endpoint.",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"East OPL Singapore Bunkering Area 100NM\",\n  \"description\": \"Singapore Bunkering area (100NM) for demo purpose\",\n  \"custom_type\": \"CIRCULAR\",\n  \"circle_details\": {\n    \"latitude\": 1.816667,\n    \"longitude\": 104.700000,\n    \"radius\": 185200\n  }\n}\n\n\n\n\n\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{server_url}}/zone-port-insights/v1/zones/custom",
+											"host": [
+												"{{server_url}}"
+											],
+											"path": [
+												"zone-port-insights",
+												"v1",
+												"zones",
+												"custom"
+											]
+										}
+									},
+									"_postman_previewlanguage": "",
+									"header": [],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"body": ""
+								}
+							]
+						},
+						{
+							"name": "Edit Custom Zone",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{access_token}}",
+										"description": "Bearer token obtained via the signin endpoint.",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"account_id\": \"\",\n  \"name\": \"Stage polygone Testing -1\",\n  \"description\": \"This is a polygon custom zone\",\n  \"custom_type\": \"POLYGON\",\n  \"circle_details\": {\n    \"latitude\": \"8.920952497564684\",\n    \"longitude\": \"-79.55429010602475\",\n    \"radius\": \"300\"\n  },\n  \"polygon_details\": {\n    \"format\": \"GEOJSON\",\n    \"polygon\": \"{\\\"type\\\":\\\"FeatureCollection\\\",\\\"features\\\":[{\\\"type\\\":\\\"Feature\\\",\\\"properties\\\":{},\\\"geometry\\\":{\\\"type\\\":\\\"Polygon\\\",\\\"coordinates\\\":[[[-79.5660000982909,8.943233402848108],[-79.56640082614483,8.942753576904025],[-79.56672869438854,8.942057828161111],[-79.5650164935588,8.94135008238625],[-79.56411789170518,8.942705594274912],[-79.56518649931529,8.943605267519757],[-79.5660000982909,8.943233402848108]]]}}]}\"\n  }\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{server_url}}/zone-port-insights/v1/zones/custom/3f90075f-c562-4225-b631-368ae6e1f951",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"zone-port-insights",
+										"v1",
+										"zones",
+										"custom",
+										"3f90075f-c562-4225-b631-368ae6e1f951"
+									]
+								},
+								"description": "Update an existing custom zone identified by its zone id. Supports modifying name, description, and geometry (polygon or circular). Internal endpoint: requires VPN and Super Admin access."
+							},
+							"response": [
+								{
+									"name": "Port of Stein (NL) - EDIT",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "{{access_token}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n  \"name\": \"Haven Stein\",\n  \"description\": \"A Polygon describing the inland port in Stein (NL) - EDITED\",\n  \"custom_type\": \"POLYGON\",\n  \"polygon_details\": {\n    \"format\": \"GEOJSON\",\n    \"polygon\": \"{\\\"type\\\":\\\"FeatureCollection\\\",\\\"features\\\":[{\\\"type\\\":\\\"Feature\\\",\\\"properties\\\":{},\\\"geometry\\\":{\\\"type\\\":\\\"Polygon\\\",\\\"coordinates\\\":[[[5.7537472,50.9720187],[5.7668329,50.9694087],[5.7719333,50.9848998],[5.7645525,50.9853447],[5.7618203,50.9816761],[5.7561203,50.9748358],[5.7537472,50.9720187]]]}}]}\"\n  }\n}\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{server_url}}/zone-port-insights/v1/zones/custom/:id",
+											"host": [
+												"{{server_url}}"
+											],
+											"path": [
+												"zone-port-insights",
+												"v1",
+												"zones",
+												"custom",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "31a00ffe-ccf1-434f-a7be-92e4c36bbec9"
+												}
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Date",
+											"value": "Thu, 10 Jul 2025 14:17:40 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Content-Length",
+											"value": "947"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "x-amzn-RequestId",
+											"value": "f0f465eb-71e1-4e26-9be2-f04642e928bd"
+										},
+										{
+											"key": "x-amzn-Remapped-Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "x-amz-apigw-id",
+											"value": "Nfy8zGayIAMEiSg="
+										},
+										{
+											"key": "response-ms",
+											"value": "9"
+										},
+										{
+											"key": "x-amzn-Remapped-Date",
+											"value": "Thu, 10 Jul 2025 14:17:40 GMT"
+										}
+									],
+									"cookie": [
+										{
+											"expires": "Invalid Date",
+											"domain": "",
+											"path": ""
+										}
+									],
+									"body": "{\n    \"meta\": {\n        \"request_id\": \"b05b0207-727c-461f-b941-5aee81e29c88\",\n        \"request_timestamp\": \"2025-07-10T14:17:40Z\"\n    },\n    \"data\": {\n        \"centroid\": {\n            \"longitude\": 50.97713403257443,\n            \"latitude\": 5.763968924124481\n        },\n        \"id\": \"31a00ffe-ccf1-434f-a7be-92e4c36bbec9\",\n        \"type\": \"Custom\",\n        \"sub_type\": \"POLYGON\",\n        \"name\": \"Haven Stein\",\n        \"description\": \"A Polygon describing the inland port in Stein (NL) - EDITED\",\n        \"created_by\": \"frank.keulers@polestarglobal.com\",\n        \"created_at\": \"2025-07-10T14:13:48Z\",\n        \"last_modified_by\": \"frank.keulers@polestarglobal.com\",\n        \"last_modified_at\": \"2025-07-10T14:17:40Z\",\n        \"custom_type\": \"POLYGON\",\n        \"circle_details\": null,\n        \"polygon_details\": {\n            \"format\": \"GEOJSON\",\n            \"polygon\": \"{\\\"type\\\":\\\"FeatureCollection\\\",\\\"features\\\":[{\\\"type\\\":\\\"Feature\\\",\\\"properties\\\":{},\\\"geometry\\\":{\\\"type\\\":\\\"Polygon\\\",\\\"coordinates\\\":[[[5.7537472,50.9720187],[5.7668329,50.9694087],[5.7719333,50.9848998],[5.7645525,50.9853447],[5.7618203,50.9816761],[5.7561203,50.9748358],[5.7537472,50.9720187]]]}}]}\"\n        }\n    }\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Zone & Port Search",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"description": "Bearer token obtained via the signin endpoint.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/zone-port-insights/v1/zones?limit=500&offset=0",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"zone-port-insights",
+								"v1",
+								"zones"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "500",
+									"description": "Maximum number of matching results to return (500 max)."
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "The number of records to skip. works in conjuction with limit."
+								},
+								{
+									"key": "name_contains",
+									"value": "",
+									"description": "Name or partial name of the port. Use this parameter to search for particular ports by name.",
+									"disabled": true
+								},
+								{
+									"key": "types",
+									"value": "",
+									"description": "(comma separated list). Filter the request by specific zone types. If omitted all types will be included in the request.",
+									"disabled": true
+								},
+								{
+									"key": "sub_type",
+									"value": "",
+									"description": "(comma separated list). Filter by specific zone or port sub types. Avoid using both the type and sub_type filters as they could be mutually exclusive. Refer to documentation for a list of sub types.",
+									"disabled": true
+								},
+								{
+									"key": "country_code",
+									"value": "",
+									"description": "(comma separated list). Filter results by country using the three letter country code. All countries will be included if this parameter is omitted.",
+									"disabled": true
+								},
+								{
+									"key": "unlocode",
+									"value": "",
+									"description": "(comma separated list). The port's unique UNLOCODE. Use either this parameter or the name_contains parameter. Using both may result in matches getting excluded.",
+									"disabled": true
+								},
+								{
+									"key": "sub_division_code",
+									"value": "",
+									"description": "(comma separated list). Filter results by sub division.",
+									"disabled": true
+								},
+								{
+									"key": "wpi_number",
+									"value": "",
+									"description": "(comma separated list). Filter resuls by World Port Index number.",
+									"disabled": true
+								}
+							]
+						},
+						"description": "Search for standard zones and ports by name, type, sub_type, country, UNLOCODE, or World Port Index number. Use filters such as name_contains, types, sub_type, and country_code to refine results. Returns matching zone and port definitions with metadata."
+					},
+					"response": [
+						{
+							"name": "ZONE SEARCH: Argentinian EEZ",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server_url}}/zone-port-insights/v1/zones?limit=3&offset=0&name_contains=argentin",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"zone-port-insights",
+										"v1",
+										"zones"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "3"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "name_contains",
+											"value": "argentin"
+										},
+										{
+											"key": "types",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "sub_type",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "country_code",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "unlocode",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "sub_division_code",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "wpi_number",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Jul 2025 14:56:36 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1402"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "3e52d434-3510-4750-9653-76ea59bfd274"
+								},
+								{
+									"key": "x-amzn-Remapped-Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "NZSxsFSXoAMEVpg="
+								},
+								{
+									"key": "response-ms",
+									"value": "62"
+								},
+								{
+									"key": "x-amzn-Remapped-Date",
+									"value": "Tue, 08 Jul 2025 14:56:36 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"meta\": {\n        \"limit\": 3,\n        \"offset\": 0,\n        \"total_count\": 6,\n        \"request_id\": \"5617ccab-2a29-416b-8edf-a157ee84cb8d\",\n        \"request_timestamp\": \"2025-07-08T14:56:36Z\",\n        \"zone_version\": \"0.7.0\"\n    },\n    \"data\": [\n        {\n            \"centroid\": {\n                \"longitude\": -64.22213892455278,\n                \"latitude\": -46.662052707344344\n            },\n            \"country_official_name\": \"Argentine Republic\",\n            \"country_code\": \"ARG\",\n            \"description\": \"\",\n            \"id\": \"b92496e8-7c8d-456a-98f8-1ded7c5d7fbe\",\n            \"name\": \"Argentinian 12 NM\",\n            \"sub_type\": \"Territorial Sea\",\n            \"type\": \"Jurisdictional\",\n            \"unlocode\": \"\",\n            \"country_common_name\": \"Argentina\",\n            \"sub_division_code\": \"\",\n            \"sub_division_name\": \"\",\n            \"wpi_number\": null\n        },\n        {\n            \"centroid\": {\n                \"longitude\": -62.15575929328527,\n                \"latitude\": -47.0561447408376\n            },\n            \"country_official_name\": \"Argentine Republic\",\n            \"country_code\": \"ARG\",\n            \"description\": \"\",\n            \"id\": \"a9f7456b-c10a-469f-8486-a1e392a5b82c\",\n            \"name\": \"Argentinian Exclusive Economic Zone\",\n            \"sub_type\": \"Exclusive Economic Zones (EEZ)\",\n            \"type\": \"Jurisdictional\",\n            \"unlocode\": \"\",\n            \"country_common_name\": \"Argentina\",\n            \"sub_division_code\": \"\",\n            \"sub_division_name\": \"\",\n            \"wpi_number\": null\n        },\n        {\n            \"centroid\": {\n                \"longitude\": -63.66209684689503,\n                \"latitude\": -42.44280447822651\n            },\n            \"country_official_name\": \"Argentine Republic\",\n            \"country_code\": \"ARG\",\n            \"description\": \"\",\n            \"id\": \"47b0d2a4-dc23-49c9-925c-3742cfba059a\",\n            \"name\": \"Argentinian Internal Waters\",\n            \"sub_type\": \"Internal Waters\",\n            \"type\": \"Jurisdictional\",\n            \"unlocode\": \"\",\n            \"country_common_name\": \"Argentina\",\n            \"sub_division_code\": \"\",\n            \"sub_division_name\": \"\",\n            \"wpi_number\": null\n        }\n    ]\n}"
+						},
+						{
+							"name": "PORT SEARCH: Rotterdam",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server_url}}/zone-port-insights/v1/zones?limit=3&offset=0&name_contains=Rotterdam&types=Ports",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"zone-port-insights",
+										"v1",
+										"zones"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "3"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "name_contains",
+											"value": "Rotterdam"
+										},
+										{
+											"key": "types",
+											"value": "Ports"
+										},
+										{
+											"key": "sub_type",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "country_code",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "unlocode",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "sub_division_code",
+											"value": "",
+											"disabled": true
+										},
+										{
+											"key": "wpi_number",
+											"value": "",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Jul 2025 14:56:48 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1419"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "2132377b-fbcf-440e-9c52-f5c81ec3d9b5"
+								},
+								{
+									"key": "x-amzn-Remapped-Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "NZSzsGqcoAMEVzQ="
+								},
+								{
+									"key": "response-ms",
+									"value": "51"
+								},
+								{
+									"key": "x-amzn-Remapped-Date",
+									"value": "Tue, 08 Jul 2025 14:56:48 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"meta\": {\n        \"limit\": 3,\n        \"offset\": 0,\n        \"total_count\": 8,\n        \"request_id\": \"fd11cf0f-8dd4-4447-9930-e67df82a224a\",\n        \"request_timestamp\": \"2025-07-08T14:56:48Z\",\n        \"zone_version\": \"0.7.0\"\n    },\n    \"data\": [\n        {\n            \"centroid\": {\n                \"longitude\": 4.566192068821286,\n                \"latitude\": 51.9027593381609\n            },\n            \"country_official_name\": \"Kingdom of the Netherlands\",\n            \"country_code\": \"NLD\",\n            \"description\": \"\",\n            \"id\": \"1340395d-62f4-4e13-a958-041a04fd7149\",\n            \"name\": \"Anchorage Area No.1 near Rotterdam (NL)\",\n            \"sub_type\": \"Anchorage Area\",\n            \"type\": \"Ports\",\n            \"unlocode\": \"\",\n            \"country_common_name\": \"Netherlands\",\n            \"sub_division_code\": \"\",\n            \"sub_division_name\": \"\",\n            \"wpi_number\": null\n        },\n        {\n            \"centroid\": {\n                \"longitude\": 4.515295715486665,\n                \"latitude\": 51.902754691259865\n            },\n            \"country_official_name\": \"Kingdom of the Netherlands\",\n            \"country_code\": \"NLD\",\n            \"description\": \"\",\n            \"id\": \"e4188079-26d9-4686-b8da-f0cb76fa59fb\",\n            \"name\": \"Anchorage Area No.2 near Rotterdam (NL)\",\n            \"sub_type\": \"Anchorage Area\",\n            \"type\": \"Ports\",\n            \"unlocode\": \"\",\n            \"country_common_name\": \"Netherlands\",\n            \"sub_division_code\": \"\",\n            \"sub_division_name\": \"\",\n            \"wpi_number\": null\n        },\n        {\n            \"centroid\": {\n                \"longitude\": 3.930329458877089,\n                \"latitude\": 52.02919597341632\n            },\n            \"country_official_name\": \"Kingdom of the Netherlands\",\n            \"country_code\": \"NLD\",\n            \"description\": \"\",\n            \"id\": \"4239f63e-c1ea-4cbf-b18e-1de6e6eca91a\",\n            \"name\": \"Anchorage Area No.3 near Rotterdam (NL)\",\n            \"sub_type\": \"Anchorage Area\",\n            \"type\": \"Ports\",\n            \"unlocode\": \"\",\n            \"country_common_name\": \"Netherlands\",\n            \"sub_division_code\": \"\",\n            \"sub_division_name\": \"\",\n            \"wpi_number\": null\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Single Zone or Port",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{server_url}}/zone-port-insights/v1/zones/:id",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"zone-port-insights",
+								"v1",
+								"zones",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Single Zone or Port: Argentinian 12 NM",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{server_url}}/zone-port-insights/v1/zones/:id",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"zone-port-insights",
+										"v1",
+										"zones",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "b92496e8-7c8d-456a-98f8-1ded7c5d7fbe"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 02 Sep 2025 13:30:54 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "543"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "dfa39c80-cd73-46e1-874f-542e66035d31"
+								},
+								{
+									"key": "x-amzn-Remapped-Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "QRquUFRzoAMERZg="
+								},
+								{
+									"key": "response-ms",
+									"value": "13"
+								},
+								{
+									"key": "x-amzn-Remapped-Date",
+									"value": "Tue, 02 Sep 2025 13:30:54 GMT"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"meta\": {\n        \"request_id\": \"e8f238c7-e7d2-41d8-b291-27450ecd88f4\",\n        \"request_timestamp\": \"2025-09-02T13:30:54Z\",\n        \"zone_version\": \"0.7.0\"\n    },\n    \"data\": {\n        \"centroid\": {\n            \"longitude\": -64.222139,\n            \"latitude\": -46.662053\n        },\n        \"country_code\": \"ARG\",\n        \"country_common_name\": \"Argentina\",\n        \"country_official_name\": \"Argentine Republic\",\n        \"description\": \"\",\n        \"id\": \"b92496e8-7c8d-456a-98f8-1ded7c5d7fbe\",\n        \"name\": \"Argentinian 12 NM\",\n        \"sub_division_code\": \"\",\n        \"sub_division_name\": \"\",\n        \"sub_type\": \"Territorial Sea\",\n        \"type\": \"Jurisdictional\",\n        \"unlocode\": \"\",\n        \"wpi_number\": \"null\",\n        \"custom_zone_details\": null\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Zone & Port Traffic",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"description": "Bearer token obtained via the signin endpoint.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/zone-port-insights/v1/zone-and-port-traffic/:id_type/:id?limit=500&offset=0&timestamp_start=",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"zone-port-insights",
+								"v1",
+								"zone-and-port-traffic",
+								":id_type",
+								":id"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "500",
+									"description": "Maximum number of matching results to return (500 max)."
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "The number of records to skip. works in conjuction with limit."
+								},
+								{
+									"key": "timestamp_start",
+									"value": "",
+									"description": "The start date and time in UTC of the analysis."
+								},
+								{
+									"key": "timestamp_end",
+									"value": "",
+									"description": "The end date and time in UTC of the analysis. If ommitted this defaults to the current date and time in UTC.",
+									"disabled": true
+								},
+								{
+									"key": "event_type",
+									"value": "",
+									"description": "(comma separated list). Filter on specific zone or port events. This defaults to all events when omitted. Options are: ZONE_ENTRY, ZONE_EXIT, PORT_AREA_ARRIVAL, PORT_ARRIVAL, PORT_DEPARTURE, PORT_AREA_DEPARTURE.",
+									"disabled": true
+								}
+							],
+							"variable": [
+								{
+									"key": "id_type",
+									"value": "id",
+									"description": "Sets how the zone or port is identified. Use 'id' for internal UUIDs or 'unlocode' for port UNLOCODE. Zones can only be queried using 'id'."
+								},
+								{
+									"key": "id",
+									"value": "",
+									"description": "The identifier matching id_type. Provide the internal UUID when id_type=id or the UNLOCODE when id_type=unlocode."
+								}
+							]
+						},
+						"description": "Retrieve zone and port traffic events for a specific zone or port within a time window. Choose identifier type with id_type (id or unlocode) and provide the corresponding id value. Filter by event_type and paginate with limit/offset."
+					},
+					"response": [
+						{
+							"name": "Buenaventura COL - Port Arrivals (May 2025)",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server_url}}/zone-port-insights/v1/zone-and-port-traffic/:id_type/:id?limit=3&offset=0&timestamp_start=2025-05-01T00:00:00Z&timestamp_end=2025-05-31T23:59:59Z&event_type=PORT_ARRIVAL",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"zone-port-insights",
+										"v1",
+										"zone-and-port-traffic",
+										":id_type",
+										":id"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "3"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "timestamp_start",
+											"value": "2025-05-01T00:00:00Z"
+										},
+										{
+											"key": "timestamp_end",
+											"value": "2025-05-31T23:59:59Z"
+										},
+										{
+											"key": "event_type",
+											"value": "PORT_ARRIVAL"
+										}
+									],
+									"variable": [
+										{
+											"key": "id_type",
+											"value": "id"
+										},
+										{
+											"key": "id",
+											"value": "d21d5547-45ef-4e7d-93ae-82bb9a36fc0f"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Thu, 10 Jul 2025 08:11:07 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2345"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "d55f675d-8ebb-43a2-bddb-e812d50aa5e7"
+								},
+								{
+									"key": "x-amzn-Remapped-Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "Ne9QZFhhIAMEoWw="
+								},
+								{
+									"key": "response-ms",
+									"value": "7"
+								},
+								{
+									"key": "x-amzn-Remapped-Date",
+									"value": "Thu, 10 Jul 2025 08:11:07 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"meta\": {\n        \"limit\": 3,\n        \"offset\": 0,\n        \"total_count\": 547,\n        \"request_id\": \"cc8c6a3b-be3c-4d07-bccd-c7cbf0e544c8\",\n        \"request_timestamp\": \"2025-07-10T08:11:07Z\",\n        \"zone_version\": \"0.7.0\"\n    },\n    \"data\": {\n        \"zone_port_information\": {\n            \"centroid\": {\n                \"longitude\": -77.07312485812649,\n                \"latitude\": 3.8957853714480133\n            },\n            \"country_official_name\": \"Republic of Colombia\",\n            \"country_code\": \"COL\",\n            \"description\": \"\",\n            \"id\": \"d21d5547-45ef-4e7d-93ae-82bb9a36fc0f\",\n            \"name\": \"Buenaventura\",\n            \"sub_type\": \"Port\",\n            \"type\": \"Ports\",\n            \"unlocode\": \"COBUN\",\n            \"country_common_name\": \"Colombia\",\n            \"sub_division_code\": \"CO-VAC\",\n            \"sub_division_name\": \"Valle Del Cauca\",\n            \"wpi_number\": 15370\n        },\n        \"events\": [\n            {\n                \"vessel_information\": {\n                    \"asset_id\": \"2ca37beb-a53f-4abc-ba87-12dc24f29e26\",\n                    \"callsign\": \"HKJG1\",\n                    \"flag\": \"Colombia\",\n                    \"flag_code\": \"COL\",\n                    \"imo\": \"9675224\",\n                    \"mmsi\": \"730151031\",\n                    \"name\": \"RM SIERRA NEVADA\",\n                    \"vessel_type\": \"Tug\"\n                },\n                \"event_details\": {\n                    \"course\": 273.9,\n                    \"draught\": 4,\n                    \"event_id\": \"bb1347c3-23b7-49ef-987a-bb399e665bcc\",\n                    \"event_timestamp\": \"2025-05-31T19:36:42Z\",\n                    \"event_type\": \"PORT_ARRIVAL\",\n                    \"heading\": 0,\n                    \"latitude\": 3.890288,\n                    \"longitude\": -77.061966,\n                    \"navigational_status\": {\n                        \"status\": \"Under way sailing\",\n                        \"code\": 9\n                    },\n                    \"reported_destination\": \"COBUN\",\n                    \"reported_eta\": \"2025-02-23T06:30:00Z\",\n                    \"speed\": 0\n                }\n            },\n            {\n                \"vessel_information\": {\n                    \"asset_id\": \"329a8ffb-b874-456f-98a3-820892187310\",\n                    \"callsign\": \"HKBL\",\n                    \"flag\": \"Colombia\",\n                    \"flag_code\": \"COL\",\n                    \"imo\": \"9526837\",\n                    \"mmsi\": \"730000028\",\n                    \"name\": \"RM VALKYRIA\",\n                    \"vessel_type\": \"Tug\"\n                },\n                \"event_details\": {\n                    \"course\": 227,\n                    \"draught\": 4.8,\n                    \"event_id\": \"f0d553a0-a47e-431a-9fb6-d9d6b6569de0\",\n                    \"event_timestamp\": \"2025-05-31T13:32:02Z\",\n                    \"event_type\": \"PORT_ARRIVAL\",\n                    \"heading\": 0,\n                    \"latitude\": 3.891667,\n                    \"longitude\": -77.07667,\n                    \"navigational_status\": {\n                        \"status\": \"Under way using engine\",\n                        \"code\": 1\n                    },\n                    \"reported_destination\": \"BUENAVENTURA\",\n                    \"reported_eta\": \"2025-04-05T05:00:00Z\",\n                    \"speed\": 0\n                }\n            },\n            {\n                \"vessel_information\": {\n                    \"asset_id\": \"da3db940-c27d-48e6-a613-d28990b0a6d2\",\n                    \"callsign\": \"HKJF5\",\n                    \"flag\": \"Colombia\",\n                    \"flag_code\": \"COL\",\n                    \"imo\": \"9536507\",\n                    \"mmsi\": \"730151136\",\n                    \"name\": \"ALISIOS\",\n                    \"vessel_type\": \"Tug\"\n                },\n                \"event_details\": {\n                    \"course\": 265,\n                    \"draught\": 4.6,\n                    \"event_id\": \"2d32a7c5-583f-47a0-ba78-7981e0f66fe9\",\n                    \"event_timestamp\": \"2025-05-31T13:31:29Z\",\n                    \"event_type\": \"PORT_ARRIVAL\",\n                    \"heading\": 0,\n                    \"latitude\": 3.893333,\n                    \"longitude\": -77.07667,\n                    \"navigational_status\": {\n                        \"status\": \"Under way using engine\",\n                        \"code\": 1\n                    },\n                    \"reported_destination\": \"B\\\\VENTURA\",\n                    \"reported_eta\": \"2025-12-11T14:30:00Z\",\n                    \"speed\": 0\n                }\n            }\n        ]\n    }\n}"
+						},
+						{
+							"name": "Vessels entering Argentinian EEZ in March 2025",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server_url}}/zone-port-insights/v1/zone-and-port-traffic/:id_type/:id?limit=3&offset=0&timestamp_start=2025-03-01T00:00:00Z&timestamp_end=2025-03-31T23:59:59Z&event_type=ZONE_ENTRY",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"zone-port-insights",
+										"v1",
+										"zone-and-port-traffic",
+										":id_type",
+										":id"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "3"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										},
+										{
+											"key": "timestamp_start",
+											"value": "2025-03-01T00:00:00Z"
+										},
+										{
+											"key": "timestamp_end",
+											"value": "2025-03-31T23:59:59Z"
+										},
+										{
+											"key": "event_type",
+											"value": "ZONE_ENTRY"
+										}
+									],
+									"variable": [
+										{
+											"key": "id_type",
+											"value": "id"
+										},
+										{
+											"key": "id",
+											"value": "a9f7456b-c10a-469f-8486-a1e392a5b82c"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Jul 2025 14:57:14 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "2459"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "df2203df-6024-4971-8d62-197bf9228b8c"
+								},
+								{
+									"key": "x-amzn-Remapped-Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "NZS3rGJLIAMEnMA="
+								},
+								{
+									"key": "response-ms",
+									"value": "32"
+								},
+								{
+									"key": "x-amzn-Remapped-Date",
+									"value": "Tue, 08 Jul 2025 14:57:14 GMT"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date",
+									"domain": "",
+									"path": ""
+								}
+							],
+							"body": "{\n    \"meta\": {\n        \"limit\": 3,\n        \"offset\": 0,\n        \"total_count\": 13426,\n        \"request_id\": \"1b9540f8-74f8-465b-ad49-41c237de883f\",\n        \"request_timestamp\": \"2025-07-08T14:57:14Z\",\n        \"zone_version\": \"0.7.0\"\n    },\n    \"data\": {\n        \"zone_port_information\": {\n            \"centroid\": {\n                \"longitude\": -62.15575929328527,\n                \"latitude\": -47.0561447408376\n            },\n            \"country_official_name\": \"Argentine Republic\",\n            \"country_code\": \"ARG\",\n            \"description\": \"\",\n            \"id\": \"a9f7456b-c10a-469f-8486-a1e392a5b82c\",\n            \"name\": \"Argentinian Exclusive Economic Zone\",\n            \"sub_type\": \"Exclusive Economic Zones (EEZ)\",\n            \"type\": \"Jurisdictional\",\n            \"unlocode\": \"\",\n            \"country_common_name\": \"Argentina\",\n            \"sub_division_code\": \"\",\n            \"sub_division_name\": \"\",\n            \"wpi_number\": null\n        },\n        \"events\": [\n            {\n                \"vessel_information\": {\n                    \"asset_id\": \"ea319b6f-2d56-40a0-b469-2cf2f0a9c6bb\",\n                    \"callsign\": \"CXAI\",\n                    \"flag\": \"Uruguay\",\n                    \"flag_code\": \"URY\",\n                    \"imo\": \"9646235\",\n                    \"mmsi\": \"770576283\",\n                    \"name\": \"PUNTA DIAMANTE\",\n                    \"vessel_type\": \"Push-boat\"\n                },\n                \"event_details\": {\n                    \"course\": 4,\n                    \"draught\": 4.7,\n                    \"event_id\": \"1e54c9a4-d199-41e2-a2ec-069cce7d365b\",\n                    \"event_timestamp\": \"2025-03-31T23:56:54Z\",\n                    \"event_type\": \"ZONE_ENTRY\",\n                    \"heading\": 0,\n                    \"latitude\": -33.3019,\n                    \"longitude\": -58.39345,\n                    \"navigational_status\": {\n                        \"status\": \"Under way using engine\",\n                        \"code\": 1\n                    },\n                    \"reported_destination\": \"PUNTA PEREIRA UY\",\n                    \"reported_eta\": null,\n                    \"speed\": 8.1\n                }\n            },\n            {\n                \"vessel_information\": {\n                    \"asset_id\": \"87c2923d-d907-4950-946a-0e1305b1dffc\",\n                    \"callsign\": \"CXQZ\",\n                    \"flag\": \"Uruguay\",\n                    \"flag_code\": \"URY\",\n                    \"imo\": \"9119385\",\n                    \"mmsi\": \"770576231\",\n                    \"name\": \"SILVIA ANA L\",\n                    \"vessel_type\": \"General cargo/Ro-Ro\"\n                },\n                \"event_details\": {\n                    \"course\": 249.5,\n                    \"draught\": 2.6,\n                    \"event_id\": \"88e559a5-a411-401d-9c63-231822ce086e\",\n                    \"event_timestamp\": \"2025-03-31T23:52:57Z\",\n                    \"event_type\": \"ZONE_ENTRY\",\n                    \"heading\": 0,\n                    \"latitude\": -34.522434,\n                    \"longitude\": -57.979103,\n                    \"navigational_status\": {\n                        \"status\": \"Under way using engine\",\n                        \"code\": 1\n                    },\n                    \"reported_destination\": \"BS COL BS\",\n                    \"reported_eta\": \"2025-04-13T00:30:00Z\",\n                    \"speed\": 28.4\n                }\n            },\n            {\n                \"vessel_information\": {\n                    \"asset_id\": \"06dbcca7-f0b4-48c3-9a6f-f177d63577cd\",\n                    \"callsign\": \"LW7626\",\n                    \"flag\": \"Argentina\",\n                    \"flag_code\": \"ARG\",\n                    \"imo\": \"7901095\",\n                    \"mmsi\": \"701000571\",\n                    \"name\": \"GOLFO SAN MATIAS\",\n                    \"vessel_type\": \"Fishing Vessel\"\n                },\n                \"event_details\": {\n                    \"course\": 91,\n                    \"draught\": 3,\n                    \"event_id\": \"5d929eaf-b723-4a6a-bc87-622729bbb1fd\",\n                    \"event_timestamp\": \"2025-03-31T23:46:05Z\",\n                    \"event_type\": \"ZONE_ENTRY\",\n                    \"heading\": 0,\n                    \"latitude\": -38.046665,\n                    \"longitude\": -57.53,\n                    \"navigational_status\": {\n                        \"status\": \"Undefined = default (also used by AIS-SART, MOB-AIS and EPIRB-AIS under test)\",\n                        \"code\": 0\n                    },\n                    \"reported_destination\": \"ZONA PESCA\",\n                    \"reported_eta\": \"2025-10-01T09:00:00Z\",\n                    \"speed\": 0\n                }\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Vessels in Zone or Port",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{access_token}}",
+								"description": "Bearer token obtained via the signin endpoint.",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{server_url}}/zone-port-insights/v1/vessels-in-zone-or-port/:id_type/:id?limit=500&offset=0",
+							"host": [
+								"{{server_url}}"
+							],
+							"path": [
+								"zone-port-insights",
+								"v1",
+								"vessels-in-zone-or-port",
+								":id_type",
+								":id"
+							],
+							"query": [
+								{
+									"key": "limit",
+									"value": "500",
+									"description": "Maximum number of matching results to return (500 max)."
+								},
+								{
+									"key": "offset",
+									"value": "0",
+									"description": "The number of records to skip. works in conjuction with limit."
+								}
+							],
+							"variable": [
+								{
+									"key": "id_type",
+									"value": "id",
+									"description": "Sets how the zone or port is identified. Use 'id' for internal UUIDs or 'unlocode' for port UNLOCODE. Zones can only be queried using 'id'."
+								},
+								{
+									"key": "id",
+									"value": "",
+									"description": "The identifier matching id_type. Provide the internal UUID when id_type=id or the UNLOCODE when id_type=unlocode."
+								}
+							]
+						},
+						"description": "Get vessels currently inside a specific zone or port. Choose identifier type with id_type (id or unlocode) and provide the corresponding id value. Paginate results with limit/offset."
+					},
+					"response": [
+						{
+							"name": "VESSELS AT ANCHORAGE: Vessels currently in Port of Rotterdam Anchorage Areas",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server_url}}/zone-port-insights/v1/vessels-in-zone-or-port/:id_type/:id?limit=3&offset=0",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"zone-port-insights",
+										"v1",
+										"vessels-in-zone-or-port",
+										":id_type",
+										":id"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "3"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									],
+									"variable": [
+										{
+											"key": "id_type",
+											"value": "id"
+										},
+										{
+											"key": "id",
+											"value": "289d54db-14f7-4759-bbc1-4940cbf0290a"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Jul 2025 14:59:11 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1410"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "c08c25c2-9134-4706-8002-62f11a091488"
+								},
+								{
+									"key": "x-amzn-Remapped-Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "NZTJ_E-toAMEpLw="
+								},
+								{
+									"key": "response-ms",
+									"value": "5"
+								},
+								{
+									"key": "x-amzn-Remapped-Date",
+									"value": "Tue, 08 Jul 2025 14:59:11 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"meta\": {\n        \"limit\": 3,\n        \"offset\": 0,\n        \"total_count\": 3,\n        \"request_id\": \"133a5ecb-d4dc-4ad0-a030-d36db457fb80\",\n        \"request_timestamp\": \"2025-07-08T14:59:11Z\",\n        \"zone_version\": \"0.7.0\"\n    },\n    \"data\": {\n        \"zone_port_information\": {\n            \"centroid\": {\n                \"longitude\": 3.5041289866210983,\n                \"latitude\": 52.018797407628256\n            },\n            \"country_official_name\": \"Kingdom of the Netherlands\",\n            \"country_code\": \"NLD\",\n            \"description\": \"\",\n            \"id\": \"289d54db-14f7-4759-bbc1-4940cbf0290a\",\n            \"name\": \"Anchorage Area No.6 near Rotterdam (NL)\",\n            \"sub_type\": \"Anchorage Area\",\n            \"type\": \"Ports\",\n            \"unlocode\": \"\",\n            \"country_common_name\": \"Netherlands\",\n            \"sub_division_code\": \"\",\n            \"sub_division_name\": \"\",\n            \"wpi_number\": null\n        },\n        \"vessels\": [\n            {\n                \"timestamp_entered\": \"2025-07-02T03:58:03Z\",\n                \"vessel_information\": {\n                    \"asset_id\": \"77756d47-4628-42cb-9e2a-2e00bbfbd58f\",\n                    \"callsign\": \"C6CN5\",\n                    \"flag\": \"Bahamas\",\n                    \"flag_code\": \"BHS\",\n                    \"imo\": \"9721401\",\n                    \"mmsi\": \"311000520\",\n                    \"name\": \"SEAPEAK VANCOUVER\",\n                    \"vessel_type\": \"LNG carrier\"\n                }\n            },\n            {\n                \"timestamp_entered\": \"2025-06-27T07:20:30Z\",\n                \"vessel_information\": {\n                    \"asset_id\": \"7711d0a0-2e60-4d5d-9223-6269a01e1083\",\n                    \"callsign\": \"9HA4951\",\n                    \"flag\": \"Malta\",\n                    \"flag_code\": \"MLT\",\n                    \"imo\": \"9850680\",\n                    \"mmsi\": \"215079000\",\n                    \"name\": \"GAS AGILITY\",\n                    \"vessel_type\": \"Bunkering Tanker\"\n                }\n            },\n            {\n                \"timestamp_entered\": \"2025-06-13T05:10:07Z\",\n                \"vessel_information\": {\n                    \"asset_id\": \"c4cefd6d-356d-49a0-8784-fc88e092695f\",\n                    \"callsign\": \"9V8195\",\n                    \"flag\": \"Singapore\",\n                    \"flag_code\": \"SGP\",\n                    \"imo\": \"9958327\",\n                    \"mmsi\": \"563247400\",\n                    \"name\": \"NORTH VALLEY\",\n                    \"vessel_type\": \"LNG carrier\"\n                }\n            }\n        ]\n    }\n}"
+						},
+						{
+							"name": "VESSELS IN ZONE: Vessels currently in Suez Canal",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "{{access_token}}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{server_url}}/zone-port-insights/v1/vessels-in-zone-or-port/:id_type/:id?limit=3&offset=0",
+									"host": [
+										"{{server_url}}"
+									],
+									"path": [
+										"zone-port-insights",
+										"v1",
+										"vessels-in-zone-or-port",
+										":id_type",
+										":id"
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "3"
+										},
+										{
+											"key": "offset",
+											"value": "0"
+										}
+									],
+									"variable": [
+										{
+											"key": "id_type",
+											"value": "id"
+										},
+										{
+											"key": "id",
+											"value": "30745ef4-5fa7-48ba-8418-97ae31550580"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Tue, 08 Jul 2025 14:59:01 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Content-Length",
+									"value": "1305"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amzn-RequestId",
+									"value": "2369ed21-e274-4bbb-8609-96ac98f90414"
+								},
+								{
+									"key": "x-amzn-Remapped-Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-amz-apigw-id",
+									"value": "NZTIcET4IAMEbrA="
+								},
+								{
+									"key": "response-ms",
+									"value": "6"
+								},
+								{
+									"key": "x-amzn-Remapped-Date",
+									"value": "Tue, 08 Jul 2025 14:59:01 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"meta\": {\n        \"limit\": 3,\n        \"offset\": 0,\n        \"total_count\": 111,\n        \"request_id\": \"eb61b858-1328-4c23-8b25-637aab2429d3\",\n        \"request_timestamp\": \"2025-07-08T14:59:01Z\",\n        \"zone_version\": \"0.7.0\"\n    },\n    \"data\": {\n        \"zone_port_information\": {\n            \"centroid\": {\n                \"longitude\": 32.4213494403095,\n                \"latitude\": 30.532561170678406\n            },\n            \"country_official_name\": \"\",\n            \"country_code\": \"\",\n            \"description\": \"\",\n            \"id\": \"30745ef4-5fa7-48ba-8418-97ae31550580\",\n            \"name\": \"Suez Canal\",\n            \"sub_type\": \"Canals\",\n            \"type\": \"Waterways\",\n            \"unlocode\": \"\",\n            \"country_common_name\": \"\",\n            \"sub_division_code\": \"\",\n            \"sub_division_name\": \"\",\n            \"wpi_number\": null\n        },\n        \"vessels\": [\n            {\n                \"timestamp_entered\": \"2025-07-08T14:09:51Z\",\n                \"vessel_information\": {\n                    \"asset_id\": \"96e0b4c0-e96f-4e8f-a831-80b50755153c\",\n                    \"callsign\": \"JYAV5\",\n                    \"flag\": \"Jordan\",\n                    \"flag_code\": \"JOR\",\n                    \"imo\": \"9785495\",\n                    \"mmsi\": \"438036102\",\n                    \"name\": \"RAPIDO GEE\",\n                    \"vessel_type\": \"Platform Supply Ship\"\n                }\n            },\n            {\n                \"timestamp_entered\": \"2025-07-08T12:34:35Z\",\n                \"vessel_information\": {\n                    \"asset_id\": \"5419fe66-bca4-48e2-8e77-c4299088e07d\",\n                    \"callsign\": \"EAIG\",\n                    \"flag\": \"Spain (Csr)\",\n                    \"flag_code\": \"ESP\",\n                    \"imo\": \"8117770\",\n                    \"mmsi\": \"224110350\",\n                    \"name\": \"NERVIO\",\n                    \"vessel_type\": \"Tug\"\n                }\n            },\n            {\n                \"timestamp_entered\": \"2025-07-08T11:53:48Z\",\n                \"vessel_information\": {\n                    \"asset_id\": \"92b14181-cf60-4a3a-adcd-8d01677ddc55\",\n                    \"callsign\": \"SSAU\",\n                    \"flag\": \"Egypt\",\n                    \"flag_code\": \"EGY\",\n                    \"imo\": \"8206832\",\n                    \"mmsi\": \"622120113\",\n                    \"name\": \"TIM HOPE\",\n                    \"vessel_type\": \"Tug\"\n                }\n            }\n        ]\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "Stoplight documentation: [https://pole-star-global.stoplight.io/docs/pole-star-api---internal/863sywogc1xua-zone-and-port-insights](https://pole-star-global.stoplight.io/docs/pole-star-api---internal/863sywogc1xua-zone-and-port-insights)\n\nDeveloper Portal docs: [https://developers.polestarglobal.com/docs/polestar-api/ughkrmybfyfyo-introduction-to-the-zone-and-port-insights-api](https://developers.polestarglobal.com/docs/polestar-api/ughkrmybfyfyo-introduction-to-the-zone-and-port-insights-api)"
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "account_id",
+			"value": ""
+		},
+		{
+			"key": "access_token",
+			"value": ""
+		},
+		{
+			"key": "refresh_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "account_service_url",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "session_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_role",
+			"value": ""
+		}
+	]
+}
