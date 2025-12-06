@@ -1,10 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { LogOut, Map, User, Menu, X } from 'lucide-react';
+import { LogOut, Map, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 
 export function Header() {
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -39,12 +39,8 @@ export function Header() {
             </Link>
           </nav>
 
-          {/* User Menu */}
-          <div className="hidden md:flex items-center space-x-4">
-            <div className="flex items-center space-x-2 text-gray-600">
-              <User className="h-5 w-5" />
-              <span className="font-medium">{user?.first_name} {user?.last_name}</span>
-            </div>
+          {/* Logout Button */}
+          <div className="hidden md:flex items-center">
             <button
               onClick={handleLogout}
               className="flex items-center space-x-1 text-gray-500 hover:text-red-600 transition-colors"
@@ -82,10 +78,6 @@ export function Header() {
                 Create Zone
               </Link>
               <div className="pt-3 border-t border-gray-200">
-                <div className="flex items-center space-x-2 text-gray-600 mb-3">
-                  <User className="h-5 w-5" />
-                  <span className="font-medium">{user?.first_name} {user?.last_name}</span>
-                </div>
                 <button
                   onClick={handleLogout}
                   className="flex items-center space-x-1 text-red-600"

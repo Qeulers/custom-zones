@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from 'axios';
 import { API_CONFIG } from '../config/api';
-import { authService } from './auth';
+
+const TOKEN_STORAGE_KEY = 'custom_zones_token';
 
 // Create axios instance with interceptors
 const api: AxiosInstance = axios.create({
@@ -12,25 +13,11 @@ const api: AxiosInstance = axios.create({
 
 // Request interceptor to add auth token
 api.interceptors.request.use(
-  async (config: InternalAxiosRequestConfig) => {
-    const storedAuth = authService.getStoredAuth();
+  (config: InternalAxiosRequestConfig) => {
+    const token = localStorage.getItem(TOKEN_STORAGE_KEY);
     
-    if (storedAuth) {
-      // Check if token needs refresh
-      if (authService.shouldRefreshToken(storedAuth.tokenExpiresAt)) {
-        try {
-          const newTokens = await authService.refreshToken(storedAuth.tokens.refresh_token);
-          authService.updateStoredTokens(newTokens);
-          config.headers.Authorization = newTokens.access_token;
-        } catch (error) {
-          // If refresh fails, clear auth and redirect to login
-          authService.clearAuth();
-          window.location.href = '/login';
-          return Promise.reject(error);
-        }
-      } else {
-        config.headers.Authorization = storedAuth.tokens.access_token;
-      }
+    if (token) {
+      config.headers.Authorization = token;
     }
     
     return config;
@@ -43,26 +30,11 @@ api.interceptors.request.use(
 // Response interceptor to handle auth errors
 api.interceptors.response.use(
   (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    
-    // If 401 and not already retried, try to refresh token
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      
-      const storedAuth = authService.getStoredAuth();
-      if (storedAuth) {
-        try {
-          const newTokens = await authService.refreshToken(storedAuth.tokens.refresh_token);
-          authService.updateStoredTokens(newTokens);
-          originalRequest.headers.Authorization = newTokens.access_token;
-          return api(originalRequest);
-        } catch (refreshError) {
-          authService.clearAuth();
-          window.location.href = '/login';
-          return Promise.reject(refreshError);
-        }
-      }
+  (error) => {
+    // If 401, clear token and redirect to login
+    if (error.response?.status === 401) {
+      localStorage.removeItem(TOKEN_STORAGE_KEY);
+      window.location.href = '/login';
     }
     
     return Promise.reject(error);

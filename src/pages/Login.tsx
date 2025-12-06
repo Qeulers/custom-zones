@@ -1,17 +1,14 @@
 import { useState, FormEvent } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
-import { Map, Eye, EyeOff } from 'lucide-react';
+import { Map, Key } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { Button, Input, Alert } from '../components/ui';
+import { Button, Alert } from '../components/ui';
 
 export function LoginPage() {
-  const { login, isAuthenticated, isLoading: authLoading } = useAuth();
+  const { setToken, isAuthenticated, isLoading: authLoading } = useAuth();
   const navigate = useNavigate();
   
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [accessToken, setAccessToken] = useState('');
   const [error, setError] = useState<string | null>(null);
 
   // Redirect if already authenticated
@@ -27,19 +24,18 @@ export function LoginPage() {
     return <Navigate to="/" replace />;
   }
 
-  const handleSubmit = async (e: FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setError(null);
-    setIsLoading(true);
 
-    try {
-      await login({ email, password });
-      navigate('/');
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
-    } finally {
-      setIsLoading(false);
+    const token = accessToken.trim();
+    if (!token) {
+      setError('Please enter an access token');
+      return;
     }
+
+    setToken(token);
+    navigate('/');
   };
 
   return (
@@ -54,7 +50,7 @@ export function LoginPage() {
               </div>
             </div>
             <h2 className="text-2xl font-bold text-gray-900">Custom Zones</h2>
-            <p className="text-gray-500 mt-2">Sign in to manage your zones</p>
+            <p className="text-gray-500 mt-2">Enter your access token to continue</p>
           </div>
 
           {/* Error Alert */}
@@ -64,49 +60,33 @@ export function LoginPage() {
             </Alert>
           )}
 
-          {/* Login Form */}
+          {/* Token Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            <Input
-              label="Email Address"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="you@example.com"
-              required
-              autoComplete="email"
-              autoFocus
-            />
-
-            <div className="relative">
-              <Input
-                label="Password"
-                type={showPassword ? 'text' : 'password'}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="Enter your password"
-                required
-                autoComplete="current-password"
+            <div>
+              <label htmlFor="token" className="block text-sm font-medium text-gray-700 mb-1">
+                Access Token
+              </label>
+              <textarea
+                id="token"
+                value={accessToken}
+                onChange={(e) => setAccessToken(e.target.value)}
+                placeholder="Paste your access token here..."
+                rows={4}
+                className="block w-full rounded-lg border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 text-sm font-mono"
+                autoFocus
               />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-8 text-gray-400 hover:text-gray-600"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5" />
-                ) : (
-                  <Eye className="h-5 w-5" />
-                )}
-              </button>
+              <p className="mt-2 text-xs text-gray-500">
+                Get your access token from the Pole Star API authentication endpoint
+              </p>
             </div>
 
             <Button
               type="submit"
               className="w-full"
               size="lg"
-              isLoading={isLoading}
+              leftIcon={<Key className="h-5 w-5" />}
             >
-              Sign In
+              Continue
             </Button>
           </form>
 
